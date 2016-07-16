@@ -1,0 +1,24 @@
+{
+  "name": "hubot-messagebird",
+  "version": "1.0.0",
+  "description": "A Hubot adapter for sending and receiving messages using the Messagebird RESTapi.",
+  "main": "src/sample.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sprk-platform/hubot-messagebird.git"
+  },
+  "keywords": [
+    "hubot",
+    "messagebird",
+    "sms"
+  ],
+  "author": "Myk Klemme @mklemme",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sprk-platform/hubot-messagebird/issues"
+  },
+  "homepage": "https://github.com/sprk-platform/hubot-messagebird#readme"
+}
