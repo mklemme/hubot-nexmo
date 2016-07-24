@@ -32,9 +32,15 @@ class Nexmo extends Adapter
     @from  = process.env.HUBOT_NEXMO_FROM
     @robot = robot
     super robot
-    # @robot.logger.info "Constructor"
+    @robot.logger.info "hubot-nexmo: Adapter loaded."
 
   run: ->
+
+    unless @verifyToken
+      @emit "error", new Error "You must configure the MESSENGER_VERIFY_TOKEN environment variable."
+    unless @accessToken
+      @emit "error", new Error "You must configure the MESSENGER_ACCESS_TOKEN environment variable."
+
     self = @
 
     @robot.router.post "/hubot/sms", (request, response) =>
@@ -55,9 +61,16 @@ class Nexmo extends Adapter
           message: message,
           user: user
         }
+      return
+    @emit "connected"
 
   send: (envelope, strings...) ->
-    @robot.logger.info "Send"
+    user = envelope.user
+    message = strings.join "\n"
+
+    @send_sms message, user.id, (error, body) ->
+      if error or not body?
+        console.log "Error sending outbound SMS: #{error}"
 
   receive_sms: (body, from, user) ->
 
