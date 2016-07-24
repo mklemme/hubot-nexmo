@@ -36,15 +36,14 @@ class Nexmo extends Adapter
 
   run: ->
 
-    unless @verifyToken
-      @emit "error", new Error "You must configure the MESSENGER_VERIFY_TOKEN environment variable."
-    unless @accessToken
-      @emit "error", new Error "You must configure the MESSENGER_ACCESS_TOKEN environment variable."
+    # unless @verifyToken
+    #   @emit "error", new Error "You must configure the MESSENGER_VERIFY_TOKEN environment variable."
+    # unless @accessToken
+    #   @emit "error", new Error "You must configure the MESSENGER_ACCESS_TOKEN environment variable."
 
     self = @
 
     @robot.router.post "/hubot/sms", (request, response) =>
-      console.log(request.body)
 
       response.writeHead 200, 'Content-Type': 'text/plain'
       response.end()
@@ -52,69 +51,86 @@ class Nexmo extends Adapter
       message = request.body.text
       from = request.body.msisdn
       if from? and message?
-
         user = @robot.brain.userForId from
         @receive_sms(message, from, user)
 
-        @robot.emit "sms:received", {
-          from : from,
-          message: message,
-          user: user
-        }
-      return
+    @robot.on "emoteWithEmoji", (data) =>
+      @send_sms data.message, data.user.id, true, (error, body) ->
+        if error or not body?
+          console.log "Error sending emoteWithEmoji"
+          console.log error
+
+
+
     @emit "connected"
 
   send: (envelope, strings...) ->
+    console.log(envelope)
     user = envelope.user
     message = strings.join "\n"
 
-    @send_sms message, user.id, (error, body) ->
+    @send_sms message, user.id, false, (error, body) ->
       if error or not body?
-        console.log "Error sending outbound SMS: #{error}"
+        console.log "Error sending outbound SMS."
+        console.log error
 
   receive_sms: (body, from, user) ->
 
     return if body.length is 0
-    console.log("got it!")
     @receive new TextMessage user, body, 'messageId'
 
-  send_sms: (message, to, callback) ->
+  send_sms: (message, to, unicode, callback) ->
 
     user = @robot.brain.userForId to
+
+    if unicode
+      type = "unicode"
+    else
+      type = "text"
+
+
+    console.log(type)
 
     data = JSON.stringify({
      api_key: @token,
      api_secret: @sid,
      to: to,
      from: @from,
-     text: message
+     text: message,
+     type: type
     })
+
+    console.log(data)
 
     @robot.http("https://rest.nexmo.com")
       .path("/sms/json")
       .header("Content-Type","application/json")
       .post(data) (err, res, body) ->
         if err
+          console.log("err")
           console.log(err)
           callback err
         else if res.statusCode is 202
+          console.log("body: 202")
           console.log(body)
           json = JSON.parse(body)
           callback null, json
         else
+          console.log("body")
           console.log body
           json = JSON.parse(body)
-          callback json
-
-      @robot.emit "sms:sent", {
-        from: @from,
-        to: to,
-        message: message,
-        user: user
-      }
+          callback null, json
 
   reply: (envelope, strings...) ->
-    @robot.logger.info "Reply"
+    console.log("sending: ")
+    console.log(strings)
+    user = envelope.user
+    message = strings.join "\n"
+
+    @send_sms message, user.id, (error, body) ->
+      if error or not body?
+        console.log "Error sending outbound SMS."
+        console.log error
 
 exports.Nexmo = Nexmo
 
