@@ -19,11 +19,7 @@
 # Author:
 #   Myk Klemme (@mklemme)
 #
-try
-  {Robot,Adapter,TextMessage,User} = require 'hubot'
-catch
-  prequire = require('parent-require')
-  {Robot,Adapter,TextMessage,User} = prequire 'hubot'
+{Robot,Adapter,TextMessage,User} = require 'hubot'
 
 HTTP    = require "http"
 QS      = require "querystring"
