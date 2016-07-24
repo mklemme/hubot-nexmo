@@ -1,24 +1,33 @@
 {
-  "name": "hubot-messagebird",
+  "name": "hubot-nexmo",
   "version": "1.0.0",
-  "description": "A Hubot adapter for sending and receiving messages using the Messagebird RESTapi.",
-  "main": "src/sample.coffee",
+  "description": "A Hubot adapter for sending and receiving messages using the Nexmo RESTapi.",
+  "main": "src/nexmo.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sprk-platform/hubot-messagebird.git"
+    "url": "git+https://github.com/sprk-platform/hubot-nexmo.git"
   },
   "keywords": [
     "hubot",
-    "messagebird",
+    "nexmo",
     "sms"
   ],
   "author": "Myk Klemme @mklemme",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sprk-platform/hubot-messagebird/issues"
+    "url": "https://github.com/sprk-platform/hubot-nexmo/issues"
   },
-  "homepage": "https://github.com/sprk-platform/hubot-messagebird#readme"
+  "homepage": "https://github.com/sprk-platform/hubot-nexmo#readme",
+  "dependencies": {
+    "parent-require": "^1.0.0"
+  },
+  "peerDependencies": {
+    "hubot": ">=2.0"
+  },
+  "devDependencies": {
+    "coffee-script": ">=1.2.0"
+  }
 }
