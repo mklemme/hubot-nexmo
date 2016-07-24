@@ -60,8 +60,6 @@ class Nexmo extends Adapter
           console.log "Error sending emoteWithEmoji"
           console.log error
 
-
-
     @emit "connected"
 
   send: (envelope, strings...) ->
@@ -87,9 +85,6 @@ class Nexmo extends Adapter
     else
       type = "text"
 
-
-    console.log(type)
-
     data = JSON.stringify({
      api_key: @token,
      api_secret: @sid,
@@ -105,20 +100,7 @@ class Nexmo extends Adapter
       .path("/sms/json")
       .header("Content-Type","application/json")
       .post(data) (err, res, body) ->
-        if err
-          console.log("err")
-          console.log(err)
-          callback err
-        else if res.statusCode is 202
-          console.log("body: 202")
-          console.log(body)
-          json = JSON.parse(body)
-          callback null, json
-        else
-          console.log("body")
-          console.log body
-          json = JSON.parse(body)
-          callback null, json
+
 
   reply: (envelope, strings...) ->
     console.log("sending: ")
