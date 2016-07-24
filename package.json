@@ -1,6 +1,6 @@
 {
   "name": "hubot-nexmo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Hubot adapter for sending and receiving messages using the Nexmo RESTapi.",
   "main": "src/nexmo.coffee",
   "scripts": {
