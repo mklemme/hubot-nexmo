@@ -65,7 +65,6 @@ class Nexmo extends Adapter
     @emit "connected"
 
   send: (envelope, strings...) ->
-    console.log(envelope)
     user = envelope.user
     message = strings.join "\n"
 
