@@ -82,7 +82,7 @@ class Nexmo extends Adapter
 
     user = @robot.brain.userForId to
 
-    if unicode
+    if unicode == true
       type = "unicode"
     else
       type = "text"
